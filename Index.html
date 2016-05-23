@@ -1,0 +1,487 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Audio Processing Disorder</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <style>
+        .draggable, .draggable2 {
+            width: 80px;
+            height: 80px;
+            z-index: 999;
+            border: solid;
+            border-width: 1px;
+            background-color: white;
+        }
+
+        .droppable {
+            width: 80px;
+            height: 80px;
+            border: solid;
+            border-width: 1px;
+            z-index: 900;
+            background-color: white;
+        }
+
+        .col-md-1 {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .solidCircle {
+            width: 60px;
+            height: 60px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptyCircleRed {
+            background-color: white;
+            border: 3px solid red;
+            height: 60px;
+            width: 60px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptySquareRed {
+            background-color: white;
+            border: 3px solid red;
+            height: 60px;
+            width: 60px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptySquareBlue {
+            background-color: white;
+            border: 3px solid blue;
+            height: 60px;
+            width: 60px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptySquareYellow {
+            background-color: white;
+            border: 3px solid yellow;
+            height: 60px;
+            width: 60px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptySquareGreen {
+            background-color: white;
+            border: 3px solid green;
+            height: 60px;
+            width: 60px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptyCircleYellow {
+            background-color: white;
+            border: 3px solid yellow;
+            height: 60px;
+            width: 60px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptyCircleGreen {
+            background-color: white;
+            border: 3px solid green;
+            height: 60px;
+            width: 60px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .solidSquare {
+            width: 60px;
+            height: 60px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .solidTriangleRed {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid red;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .solidTriangleYellow {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid yellow;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .solidTriangleGreen {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid green;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .solidTriangleBlue {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid blue;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .emptyTriangleBlue {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid blue;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+            .emptyTriangleBlue:after {
+                left: 111px;
+                width: 0;
+                height: 0;
+                border-left: 25px solid transparent;
+                border-right: 25px solid transparent;
+                border-bottom: 50px solid #FFF;
+                position: absolute;
+                top: 17px;
+                content: '';
+            }
+
+        .emptyTriangleYellow {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid yellow;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+            .emptyTriangleYellow:after {
+                left: 111px;
+                width: 0;
+                height: 0;
+                border-left: 25px solid transparent;
+                border-right: 25px solid transparent;
+                border-bottom: 50px solid #FFF;
+                position: absolute;
+                top: 98px;
+                content: '';
+            }
+
+        .emptyTriangleRed {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid red;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+            .emptyTriangleRed:after {
+                left: 31px;
+                width: 0;
+                height: 0;
+                border-left: 25px solid transparent;
+                border-right: 25px solid transparent;
+                border-bottom: 50px solid #FFF;
+                position: absolute;
+                top: 178px;
+                content: '';
+            }
+
+        .red {
+            background-color: red;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+        .button{
+            margin-top:20px;
+            display:none;
+        }
+
+        .img {
+            width: 80px;
+            height: 80px;
+            z-index: 999;
+        }
+
+        .one {
+            background-image: url("1.png");
+        }
+
+        .two {
+            background-image: url("2.png");
+        }
+
+        .three {
+            background-image: url("3.png");
+        }
+
+        .four {
+            background-image: url("4.png");
+        }
+
+        .five {
+            background-image: url("5.png");
+        }
+
+        .six {
+            background-image: url("6.png");
+        }
+
+        .seven {
+            background-image: url("7.png");
+        }
+
+        .eight {
+            background-image: url("8.png");
+        }
+
+        .nine {
+            background-image: url("9.png");
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <p>Following the audio instructions, place the cards below onto the grid. If the audio does not start automatically please press play.</p>
+            <audio id="instructionAudio" autoplay controls>
+                <source src="audio.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="col-md-7"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <table>
+                <tr>
+                    <td>
+                        <div class="draggable2" data-img="one">
+                            <div class="solidSquare red"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="two">
+                            <div class="solidCircle green"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="three">
+                            <div class="solidCircle yellow"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="nine">
+                            <div class="solidTriangleRed"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="draggable2" data-img="four">
+                            <div class="solidCircle blue"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="five">
+                            <div class="solidSquare green"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="six">
+                            <div class="solidCircle red"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="one">
+                            <div class="solidSquare blue"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="draggable2" data-img="seven">
+                            <div class="solidTriangleBlue"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="eight">
+                            <div class="solidTriangleGreen"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="nine">
+                            <div class="solidTriangleYellow"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="draggable2" data-img="five">
+                            <div class="solidSquare yellow"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <table class="targetTable">
+                <tr>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyCircleRed"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyTriangleBlue"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptySquareBlue"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptySquareGreen"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyTriangleYellow"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptySquareRed"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyTriangleRed"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyCircleYellow"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="droppable">
+                            <div class="emptyCircleGreen"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+            <input type="button" value="Flip Cards" class="button btn btn-success" id="flipBtn" />
+            <input type="button" value="Reset" class="button btn btn-primary" id="reloadBtn" />
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="jquery.ui.touch-punch.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $(".draggable").draggable({ revert: "valid" });
+        $(".draggable2").draggable({ revert: "invalid" });
+
+        $(".droppable").droppable({
+            activeClass: "ui-state-default",
+            hoverClass: "ui-state-hover",
+            drop: function (event, ui) {
+                $(this).empty();
+                $(this).removeClass("droppable");
+                $(ui.draggable).detach().css({ top: 0, left: 0 }).appendTo(this);
+                $(this).droppable("option", "disabled", true);
+            }
+        });
+
+        $("#flipBtn").click(function () {
+            $("#flipBtn").hide();
+            $("#reloadBtn").show();
+            $("audio").hide();
+
+            $(".targetTable .draggable2").each(function () {
+                $(this).switchClass("draggable2", "img " + $(this).data("img"), 100, "easeOutCubic");
+                $(this).empty();
+            });
+        });
+
+        $("#reloadBtn").click(function () {
+            location.reload();
+        });
+
+        $('#instructionAudio').on('ended', function () {
+            $("#flipBtn").show();
+        });
+    });
+</script>
+</html>
